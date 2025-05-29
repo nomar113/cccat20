@@ -75,6 +75,7 @@ app.get("/accounts/:accountId", async function (req, res) {
 	const accountId = req.params.accountId;
 	const connection = pgp()("postgres://postgres:123456@localhost:5432/app");
 	const [output] = await connection.query("select * from ccca.account where account_id = $1", [accountId]);
+	await connection.$pool.end();
 	res.json(output);
 });
 
