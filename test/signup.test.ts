@@ -55,7 +55,7 @@ test("Não deve fazer a criação da conta do usuário com nome inválido", asyn
     }
     const responseSignup = await axios.post("http://localhost:3000/signup", input);
     const outputSignup = responseSignup.data;
-    expect(outputSignup.message).toBe(-3);
+    expect(outputSignup.message).toBe("Invalid name");
 })
 
 test("Não deve fazer a criação da conta do usuário com email inválido", async function() {
@@ -68,7 +68,7 @@ test("Não deve fazer a criação da conta do usuário com email inválido", asy
     }
     const responseSignup = await axios.post("http://localhost:3000/signup", input);
     const outputSignup = responseSignup.data;
-    expect(outputSignup.message).toBe(-2)
+    expect(outputSignup.message).toBe("Invalid email")
 })
 
 test("Não deve fazer a criação da conta do usuário com cpf inválido", async function() {
@@ -81,7 +81,7 @@ test("Não deve fazer a criação da conta do usuário com cpf inválido", async
     }
     const responseSignup = await axios.post("http://localhost:3000/signup", input);
     const outputSignup = responseSignup.data;
-    expect(outputSignup.message).toBe(-1)
+    expect(outputSignup.message).toBe("Invalid cpf")
 })
 
 test("Não deve fazer a criação da conta do usuário com senha inválido", async function() {
@@ -94,7 +94,7 @@ test("Não deve fazer a criação da conta do usuário com senha inválido", asy
     }
     const responseSignup = await axios.post("http://localhost:3000/signup", input);
     const outputSignup = responseSignup.data;
-    expect(outputSignup.message).toBe(-5)
+    expect(outputSignup.message).toBe("Invalid password")
 })
 
 test("Não deve fazer a criação da conta do usuário se a conta estiver duplicada", async function() {
@@ -108,7 +108,7 @@ test("Não deve fazer a criação da conta do usuário se a conta estiver duplic
     await axios.post("http://localhost:3000/signup", input);
     const responseSignup = await axios.post("http://localhost:3000/signup", input);
     const outputSignup = responseSignup.data;
-    expect(outputSignup.message).toBe(-4)
+    expect(outputSignup.message).toBe("Account already exists")
 })
 
 test("Não deve fazer a criação da conta do usuário se a placa for inválida", async function() {
@@ -122,5 +122,5 @@ test("Não deve fazer a criação da conta do usuário se a placa for inválida"
     }
     const responseSignup = await axios.post("http://localhost:3000/signup", input);
     const outputSignup = responseSignup.data;
-    expect(outputSignup.message).toBe(-6)
+    expect(outputSignup.message).toBe("Invalid car plate")
 })
