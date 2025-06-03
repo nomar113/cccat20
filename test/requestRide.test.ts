@@ -1,5 +1,6 @@
 import { AccountDAODatabase } from "../src/dataAccount";
 import { RideDAODatabase } from "../src/dataRide";
+import Registry from "../src/Registry";
 import { RequestRide } from "../src/requestRide";
 import Signup from "../src/signup"
 
@@ -8,9 +9,11 @@ let requestRide: RequestRide;
 
 beforeEach(()=> {
     const accountDAO = new AccountDAODatabase();
-    signup = new Signup(accountDAO);
+    Registry.getInstance().provide("accountDAO", accountDAO);
+    signup = new Signup();
     const rideDAO = new RideDAODatabase();
-    requestRide = new RequestRide(accountDAO, rideDAO);
+    Registry.getInstance().provide("rideDAO", rideDAO);
+    requestRide = new RequestRide();
 })
 
 test("Não deve solicitar uma corrida o usuário não seja passageiro", async function() {

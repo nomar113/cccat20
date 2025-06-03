@@ -1,8 +1,9 @@
 import AccountDAO from "./dataAccount";
+import { inject } from "./Registry";
 
 export default class GetAccount {
-    constructor(readonly accountDAO: AccountDAO) {
-    }
+    @inject("accountDAO")
+    accountDAO!: AccountDAO
 
     async execute(accountId: string) {
         const output = await this.accountDAO.getAccountById(accountId);

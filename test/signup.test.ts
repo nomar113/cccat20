@@ -2,6 +2,7 @@ import Signup from "../src/signup";
 import GetAccount from "../src/getAccount";
 import { AccountDAODatabase, AccountDAOMemory } from "../src/dataAccount";
 import sinon from "sinon";
+import Registry from "../src/Registry";
 
 let signup: Signup;
 let getAccount: GetAccount;
@@ -9,8 +10,9 @@ let getAccount: GetAccount;
 beforeEach(() => {
     const useInMemory = false;
     const accountDAO = useInMemory ? new AccountDAOMemory() : new AccountDAODatabase();
-    signup = new Signup(accountDAO);
-    getAccount = new GetAccount(accountDAO);
+    Registry.getInstance().provide("accountDAO", accountDAO);
+    signup = new Signup();
+    getAccount = new GetAccount();
 })
 
 test("Deve fazer a criação da conta de um usuário do tipo passageiro", async function () {
@@ -188,8 +190,8 @@ test("Deve fazer a criação da conta de um usuário do tipo passageiro com mock
 
 test("Deve fazer a criação da conta de um usuário do tipo passageiro com fake", async function () {
     const accountDAO = new AccountDAOMemory();
-    signup = new Signup(accountDAO);
-    getAccount = new GetAccount(accountDAO);
+    signup = new Signup();
+    getAccount = new GetAccount();
     const input = {
         name: "John Doe",
         email: `john.doe${Math.random()}@gmail.com`,

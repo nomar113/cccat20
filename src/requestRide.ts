@@ -1,10 +1,12 @@
 import AccountDAO from "./dataAccount";
 import RideDAO from "./dataRide";
+import { inject } from "./Registry";
 
 export class RequestRide {
-
-    constructor (readonly accountDAO: AccountDAO, readonly rideDAO: RideDAO) {
-    }
+    @inject("accountDAO")
+    accountDAO!: AccountDAO;
+    @inject("rideDAO")
+    rideDAO!: RideDAO;
 
     async execute(input: any) {
         const rideId = crypto.randomUUID();
