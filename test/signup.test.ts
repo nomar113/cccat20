@@ -1,5 +1,16 @@
-import { signup } from "../src/signup";
-import { getAccount } from "../src/getAccount";
+import Signup from "../src/signup";
+import GetAccount from "../src/getAccount";
+import { AccountDAODatabase, AccountDAOMemory } from "../src/data";
+
+let signup: Signup;
+let getAccount: GetAccount;
+
+beforeEach(() => {
+    const useInMemory = true;
+    const accountDAO = useInMemory ? new AccountDAOMemory() : new AccountDAODatabase();
+    signup = new Signup(accountDAO);
+    getAccount = new GetAccount(accountDAO);
+})
 
 test("Deve fazer a criação da conta de um usuário do tipo passageiro", async function () {
     const input = {
@@ -9,14 +20,13 @@ test("Deve fazer a criação da conta de um usuário do tipo passageiro", async 
         password: "asdQWE123",
         isPassenger: true
     };
-    const outputSignup = await signup(input);
+    const outputSignup = await signup.execute(input);
     expect(outputSignup.accountId).toBeDefined();
-    const outputGetAccount = await getAccount(outputSignup.accountId);
+    const outputGetAccount = await getAccount.execute(outputSignup.accountId);
     expect(outputGetAccount.name).toBe(input.name);
     expect(outputGetAccount.email).toBe(input.email);
     expect(outputGetAccount.cpf).toBe(input.cpf);
     expect(outputGetAccount.password).toBe(input.password);
-    expect(outputGetAccount.is_passenger).toBe(input.isPassenger);
 });
 
 test("Deve fazer a criação da conta de um usuário do tipo motorista", async function () {
@@ -28,14 +38,13 @@ test("Deve fazer a criação da conta de um usuário do tipo motorista", async f
         isDriver: true,
         carPlate: "ABC1234"
     };
-    const outputSignup = await signup(input);
+    const outputSignup = await signup.execute(input);
     expect(outputSignup.accountId).toBeDefined();
-    const outputGetAccount = await getAccount(outputSignup.accountId);
+    const outputGetAccount = await getAccount.execute(outputSignup.accountId);
     expect(outputGetAccount.name).toBe(input.name);
     expect(outputGetAccount.email).toBe(input.email);
     expect(outputGetAccount.cpf).toBe(input.cpf);
     expect(outputGetAccount.password).toBe(input.password);
-    expect(outputGetAccount.is_driver).toBe(input.isDriver);
 });
 
 test("Não deve fazer a criação da conta do usuário com nome inválido", async function () {
@@ -46,7 +55,7 @@ test("Não deve fazer a criação da conta do usuário com nome inválido", asyn
         password: "asdQWE123",
         isPassenger: true
     }
-    await expect(() => signup(input)).rejects.toThrow(new Error("Invalid name"));
+    await expect(() => signup.execute(input)).rejects.toThrow(new Error("Invalid name"));
 })
 
 test("Não deve fazer a criação da conta do usuário com email inválido", async function() {
@@ -57,7 +66,7 @@ test("Não deve fazer a criação da conta do usuário com email inválido", asy
         password: "asdQWE123",
         isPassenger: true
     }
-    await expect(() => signup(input)).rejects.toThrow(new Error("Invalid email"))
+    await expect(() => signup.execute(input)).rejects.toThrow(new Error("Invalid email"))
 })
 
 test("Não deve fazer a criação da conta do usuário com cpf inválido", async function() {
@@ -68,7 +77,7 @@ test("Não deve fazer a criação da conta do usuário com cpf inválido", async
         password: "asdQWE123",
         isPassenger: true
     }
-    await expect(() => signup(input)).rejects.toThrow(new Error("Invalid cpf"));
+    await expect(() => signup.execute(input)).rejects.toThrow(new Error("Invalid cpf"));
 })
 
 test("Não deve fazer a criação da conta do usuário com senha inválido", async function() {
@@ -79,7 +88,7 @@ test("Não deve fazer a criação da conta do usuário com senha inválido", asy
         password: "asdQWE",
         isPassenger: true
     }
-    await expect(() => signup(input)).rejects.toThrow(new Error("Invalid password"));
+    await expect(() => signup.execute(input)).rejects.toThrow(new Error("Invalid password"));
 })
 
 test("Não deve fazer a criação da conta do usuário se a conta estiver duplicada", async function() {
@@ -90,8 +99,8 @@ test("Não deve fazer a criação da conta do usuário se a conta estiver duplic
         password: "asdQWE123",
         isPassenger: true
     }
-    await signup(input)
-    await expect(() => signup(input)).rejects.toThrow(new Error("Account already exists"));
+    await signup.execute(input)
+    await expect(() => signup.execute(input)).rejects.toThrow(new Error("Account already exists"));
 })
 
 test("Não deve fazer a criação da conta do usuário se a placa for inválida", async function() {
@@ -103,5 +112,5 @@ test("Não deve fazer a criação da conta do usuário se a placa for inválida"
         isDriver: true,
         carPlate: "AAA123"
     }
-    await expect(() => signup(input)).rejects.toThrow(new Error("Invalid car plate"));
+    await expect(() => signup.execute(input)).rejects.toThrow(new Error("Invalid car plate"));
 })

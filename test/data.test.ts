@@ -1,7 +1,8 @@
 import crypto from "crypto";
-import { getAccountByEmail, getAccountById, saveAccount } from "../src/data";
+import { AccountDAODatabase } from "../src/data";
 
 test("Deve salvar uma account", async function () {
+    const accountDAO = new AccountDAODatabase();
     const account = {
         accountId: crypto.randomUUID(),
         name: "John Doe",
@@ -10,13 +11,13 @@ test("Deve salvar uma account", async function () {
         password: "asdQWE123",
         isPassenger: true
     }
-    await saveAccount(account);
-    const accountByEmail = await getAccountByEmail(account.email);
+    await accountDAO.saveAccount(account);
+    const accountByEmail = await accountDAO.getAccountByEmail(account.email);
     expect(accountByEmail.name).toBe(account.name);
     expect(accountByEmail.email).toBe(account.email);
     expect(accountByEmail.cpf).toBe(account.cpf);
     expect(accountByEmail.password).toBe(account.password);
-    const accountById = await getAccountById(account.accountId);
+    const accountById = await accountDAO.getAccountById(account.accountId);
     expect(accountById.name).toBe(account.name);
     expect(accountById.email).toBe(account.email);
     expect(accountById.cpf).toBe(account.cpf);

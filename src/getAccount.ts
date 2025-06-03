@@ -1,6 +1,11 @@
-import { getAccountById } from "./data";
+import AccountDAO from "./data";
 
-export async function getAccount(accountId: string) {
-    const output = await getAccountById(accountId);
-    return output;
+export default class GetAccount {
+    constructor(readonly accountDAO: AccountDAO) {
+    }
+
+    async execute(accountId: string) {
+        const output = await this.accountDAO.getAccountById(accountId);
+        return output;
+    }
 }
