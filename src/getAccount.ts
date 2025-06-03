@@ -1,4 +1,4 @@
-import AccountDAO from "./data";
+import AccountDAO from "./dataAccount";
 
 export default class GetAccount {
     constructor(readonly accountDAO: AccountDAO) {

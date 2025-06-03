@@ -1,6 +1,6 @@
 import Signup from "../src/signup";
 import GetAccount from "../src/getAccount";
-import { AccountDAODatabase, AccountDAOMemory } from "../src/data";
+import { AccountDAODatabase, AccountDAOMemory } from "../src/dataAccount";
 import sinon from "sinon";
 
 let signup: Signup;
