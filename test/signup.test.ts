@@ -3,12 +3,16 @@ import GetAccount from "../src/GetAccount";
 import { AccountRepositoryDatabase, AccountRepositoryMemory } from "../src/AccountRepository";
 import sinon from "sinon";
 import Registry from "../src/Registry";
+import DatabaseConnection, { PgPromiseAdapter } from "../src/DatabaseConnection";
 
+let databaseConnection: DatabaseConnection;
 let signup: Signup;
 let getAccount: GetAccount;
 
 beforeEach(() => {
     const useInMemory = false;
+    databaseConnection = new PgPromiseAdapter();
+    Registry.getInstance().provide("databaseConnection", databaseConnection);
     const accountRepository = useInMemory ? new AccountRepositoryMemory() : new AccountRepositoryDatabase();
     Registry.getInstance().provide("accountRepository", accountRepository);
     signup = new Signup();
@@ -210,3 +214,7 @@ test("Deve fazer a criação da conta de um usuário do tipo passageiro com fake
     expect(outputGetAccount.cpf).toBe(input.cpf);
     expect(outputGetAccount.password).toBe(input.password);
 });
+
+afterEach(async () => {
+    await databaseConnection.close();
+})

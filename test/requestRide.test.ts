@@ -4,12 +4,16 @@ import Registry from "../src/Registry";
 import { RequestRide } from "../src/RequestRide";
 import Signup from "../src/Signup"
 import GetRide from "../src/GetRide";
+import DatabaseConnection, { PgPromiseAdapter } from "../src/DatabaseConnection";
 
+let databaseConnection: DatabaseConnection;
 let signup: Signup;
 let requestRide: RequestRide;
 let getRide: GetRide;
 
 beforeEach(()=> {
+    databaseConnection = new PgPromiseAdapter();
+    Registry.getInstance().provide("databaseConnection", databaseConnection);
     const accountRepository = new AccountRepositoryDatabase();
     Registry.getInstance().provide("accountRepository", accountRepository);
     signup = new Signup();
@@ -125,4 +129,8 @@ test("Deve solicitar uma corrida", async function() {
     expect(outputGetRide.fare).toBe(21);
     expect(outputGetRide.distance).toBe(10);
     expect(outputGetRide.status).toBe("requested");
+})
+
+afterEach(async () => {
+    await databaseConnection.close();
 })

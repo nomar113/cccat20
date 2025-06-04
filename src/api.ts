@@ -6,10 +6,13 @@ import { RequestRide } from "./RequestRide";
 import { RideRepositoryDatabase } from "./RideRepository";
 import GetRide from "./GetRide";
 import Registry from "./Registry";
+import { PgPromiseAdapter } from "./DatabaseConnection";
 
 const app = express();
 app.use(express.json());
 
+const databaseConnection = new PgPromiseAdapter();
+Registry.getInstance().provide("databaseConnection", databaseConnection);
 const accountRepository = new AccountRepositoryDatabase();
 Registry.getInstance().provide("accountRepository", accountRepository);
 const signup = new Signup();

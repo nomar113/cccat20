@@ -3,6 +3,15 @@ import { AccountRepositoryDatabase } from "../src/AccountRepository";
 import { RideRepositoryDatabase } from "../src/RideRepository";
 import Account from "../src/Account";
 import Ride from "../src/Ride";
+import DatabaseConnection, { PgPromiseAdapter } from "../src/DatabaseConnection";
+import Registry from "../src/Registry";
+
+let databaseConnection: DatabaseConnection;
+
+beforeEach(() => {
+    databaseConnection = new PgPromiseAdapter();
+    Registry.getInstance().provide("databaseConnection", databaseConnection);
+})
 
 test("Deve salvar uma account", async function () {
     const accountRepository = new AccountRepositoryDatabase();
@@ -36,4 +45,8 @@ test("Deve salvar uma ride", async function () {
             long: -48.522234807851476
         });
     await rideRepository.saveRide(ride);
+})
+
+afterEach(async () => {
+    await databaseConnection.close();
 })
