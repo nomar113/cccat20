@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { AccountDAODatabase } from "../src/dataAccount";
-import { RideDAODatabase } from "../src/dataRide";
+import { RideDAODatabase } from "../src/RideDAO";
 
 test("Deve salvar uma account", async function () {
     const accountDAO = new AccountDAODatabase();

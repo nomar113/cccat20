@@ -1,5 +1,5 @@
-import Signup from "../src/signup";
-import GetAccount from "../src/getAccount";
+import Signup from "../src/Signup";
+import GetAccount from "../src/GetAccount";
 import { AccountDAODatabase, AccountDAOMemory } from "../src/dataAccount";
 import sinon from "sinon";
 import Registry from "../src/Registry";

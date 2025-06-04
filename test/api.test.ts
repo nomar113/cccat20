@@ -54,12 +54,12 @@ test("Deve fazer a solicitação de uma corrida", async function () {
      const inputRequestRide = {
         passengerId: outputSignup.accountId,
         from: {
-            lat: "-22.88607",
-            long: "-43.28329"
+            lat: -27.584905257808835,
+            long: -48.545022195325124
         },
         to: {
-            lat: "-22.912376",
-            long: "-43.230320"
+            lat: -27.496887588317275,
+            long: -48.522234807851476
         }
     }
     const responseRequestRide = await axios.post("http://localhost:3000/request-ride", inputRequestRide);
@@ -67,11 +67,11 @@ test("Deve fazer a solicitação de uma corrida", async function () {
     expect(outputRequestRide.rideId).toBeDefined();
     const responseRide = await axios.get(`http://localhost:3000/ride/${outputRequestRide.rideId}`);
     const outputRide = responseRide.data;
-    expect(outputRide.passenger_id).toBe(outputSignup.accountId);
-    expect(outputRide.from_lat).toBe(inputRequestRide.from.lat);
-    expect(outputRide.from_long).toBe(inputRequestRide.from.long);
-    expect(outputRide.to_lat).toBe(inputRequestRide.to.lat);
-    expect(outputRide.to_long).toBe(inputRequestRide.to.long);
+    expect(outputRide.passengerId).toBe(outputSignup.accountId);
+    expect(outputRide.from.lat).toBe(inputRequestRide.from.lat);
+    expect(outputRide.from.long).toBe(inputRequestRide.from.long);
+    expect(outputRide.to.lat).toBe(inputRequestRide.to.lat);
+    expect(outputRide.to.long).toBe(inputRequestRide.to.long);
     expect(outputRide.status).toBe("requested");
 });
 
@@ -89,17 +89,17 @@ test("Não deve duplicar a solicitação de uma corrida", async function () {
      const inputRequestRide = {
         passengerId: outputSignup.accountId,
         from: {
-            lat: -22.88607,
-            long: -43.28329
+            lat: -27.584905257808835,
+            long: -48.545022195325124
         },
         to: {
-            lat: -22.912376,
-            long: -43.230320
+            lat: -27.496887588317275,
+            long: -48.522234807851476
         }
     }
     await axios.post("http://localhost:3000/request-ride", inputRequestRide);
     const responseRequestRide = await axios.post("http://localhost:3000/request-ride", inputRequestRide);
     expect(responseRequestRide.status).toBe(422);
     const outputRequestRide = responseRequestRide.data;
-    expect(outputRequestRide.message).toBe("Already exists ride for this user");
+    expect(outputRequestRide.message).toBe("The requester already have an active ride");
 });

@@ -2,7 +2,7 @@ import pgp from "pg-promise";
 
 export default interface RideDAO {
     getRideById(rideId: string): Promise<any>
-    getRideByAccountId(accountId: string): Promise<any>
+    hasActiveRideByPassengerId(accountId: string): Promise<boolean>
     saveRide(ride: any): Promise<void>
 }
 
@@ -14,11 +14,11 @@ export class RideDAODatabase implements RideDAO {
         return ride;
     }
 
-    async getRideByAccountId(accountId: string): Promise<any> {
+    async hasActiveRideByPassengerId(accountId: string): Promise<boolean> {
         const connection = pgp()("postgres://postgres:123456@localhost:5432/app");
-        const [ride] = await connection.query("select * from ccca.ride where passenger_id = $1 and status != 'completed'", [accountId]);
+        const [data] = await connection.query("select 1 from ccca.ride where passenger_id = $1 and status != 'completed'", [accountId]);
         await connection.$pool.end();
-        return ride;
+        return !!data;
     }
 
     async saveRide(ride: any): Promise<void> {
