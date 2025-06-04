@@ -1,21 +1,21 @@
 import express from "express";
-import { AccountDAODatabase } from "./dataAccount";
+import { AccountRepositoryDatabase } from "./AccountRepository";
 import Signup from "./Signup";
 import GetAccount from "./GetAccount";
 import { RequestRide } from "./RequestRide";
-import { RideDAODatabase } from "./RideDAO";
+import { RideRepositoryDatabase } from "./RideRepository";
 import GetRide from "./GetRide";
 import Registry from "./Registry";
 
 const app = express();
 app.use(express.json());
 
-const accountDAO = new AccountDAODatabase();
-Registry.getInstance().provide("accountDAO", accountDAO);
+const accountRepository = new AccountRepositoryDatabase();
+Registry.getInstance().provide("accountRepository", accountRepository);
 const signup = new Signup();
 const getAccount = new GetAccount();
-const rideDAO = new RideDAODatabase();
-Registry.getInstance().provide("rideDAO", rideDAO);
+const rideRepository = new RideRepositoryDatabase();
+Registry.getInstance().provide("rideRepository", rideRepository);
 const requestRide = new RequestRide();
 const getRide = new GetRide();
 

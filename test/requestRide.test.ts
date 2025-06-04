@@ -1,5 +1,5 @@
-import { AccountDAODatabase } from "../src/dataAccount";
-import { RideDAODatabase } from "../src/RideDAO";
+import { AccountRepositoryDatabase } from "../src/AccountRepository";
+import { RideRepositoryDatabase } from "../src/RideRepository";
 import Registry from "../src/Registry";
 import { RequestRide } from "../src/RequestRide";
 import Signup from "../src/Signup"
@@ -10,11 +10,11 @@ let requestRide: RequestRide;
 let getRide: GetRide;
 
 beforeEach(()=> {
-    const accountDAO = new AccountDAODatabase();
-    Registry.getInstance().provide("accountDAO", accountDAO);
+    const accountRepository = new AccountRepositoryDatabase();
+    Registry.getInstance().provide("accountRepository", accountRepository);
     signup = new Signup();
-    const rideDAO = new RideDAODatabase();
-    Registry.getInstance().provide("rideDAO", rideDAO);
+    const rideRepository = new RideRepositoryDatabase();
+    Registry.getInstance().provide("rideRepository", rideRepository);
     requestRide = new RequestRide();
     getRide = new GetRide();
 })
@@ -118,11 +118,11 @@ test("Deve solicitar uma corrida", async function() {
     const outputGetRide = await getRide.execute(outputRequestRide.rideId);
     expect(outputGetRide.rideId).toBe(outputRequestRide.rideId);
     expect(outputGetRide.passengerId).toBe(inputRequestRide.passengerId);
-    expect(outputGetRide.from.lat).toBe(inputRequestRide.from.lat);
-    expect(outputGetRide.from.long).toBe(inputRequestRide.from.long);
-    expect(outputGetRide.to.lat).toBe(inputRequestRide.to.lat);
-    expect(outputGetRide.to.long).toBe(inputRequestRide.to.long);
-    expect(outputGetRide.fare).toBe(0);
-    expect(outputGetRide.distance).toBe(0);
+    expect(outputGetRide.fromLat).toBe(inputRequestRide.from.lat);
+    expect(outputGetRide.fromLong).toBe(inputRequestRide.from.long);
+    expect(outputGetRide.toLat).toBe(inputRequestRide.to.lat);
+    expect(outputGetRide.toLong).toBe(inputRequestRide.to.long);
+    expect(outputGetRide.fare).toBe(21);
+    expect(outputGetRide.distance).toBe(10);
     expect(outputGetRide.status).toBe("requested");
 })

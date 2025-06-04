@@ -16,13 +16,13 @@ test("Deve fazer a criação da conta de um usuário do tipo motorista", async f
     const responseSignup = await axios.post("http://localhost:3000/signup", input);
     const outputSignup = responseSignup.data;
     expect(outputSignup.accountId).toBeDefined();
-    const responseGetAccount = await axios.get(`http://localhost:3000/accounts/${outputSignup.accountId}`)
+    const responseGetAccount = await axios.get(`http://localhost:3000/accounts/${outputSignup.accountId}`);
     const outputGetAccount = responseGetAccount.data;
     expect(outputGetAccount.name).toBe(input.name);
     expect(outputGetAccount.email).toBe(input.email);
     expect(outputGetAccount.cpf).toBe(input.cpf);
     expect(outputGetAccount.password).toBe(input.password);
-    expect(outputGetAccount.is_driver).toBe(input.isDriver);
+    expect(outputGetAccount.isDriver).toBe(input.isDriver);
 });
 
 test("Não deve fazer a criação da conta do usuário se a conta estiver duplicada", async function() {
@@ -68,10 +68,10 @@ test("Deve fazer a solicitação de uma corrida", async function () {
     const responseRide = await axios.get(`http://localhost:3000/ride/${outputRequestRide.rideId}`);
     const outputRide = responseRide.data;
     expect(outputRide.passengerId).toBe(outputSignup.accountId);
-    expect(outputRide.from.lat).toBe(inputRequestRide.from.lat);
-    expect(outputRide.from.long).toBe(inputRequestRide.from.long);
-    expect(outputRide.to.lat).toBe(inputRequestRide.to.lat);
-    expect(outputRide.to.long).toBe(inputRequestRide.to.long);
+    expect(outputRide.fromLat).toBe(inputRequestRide.from.lat);
+    expect(outputRide.fromLong).toBe(inputRequestRide.from.long);
+    expect(outputRide.toLat).toBe(inputRequestRide.to.lat);
+    expect(outputRide.toLong).toBe(inputRequestRide.to.long);
     expect(outputRide.status).toBe("requested");
 });
 

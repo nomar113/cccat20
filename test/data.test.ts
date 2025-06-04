@@ -1,24 +1,19 @@
 import crypto from "crypto";
-import { AccountDAODatabase } from "../src/dataAccount";
-import { RideDAODatabase } from "../src/RideDAO";
+import { AccountRepositoryDatabase } from "../src/AccountRepository";
+import { RideRepositoryDatabase } from "../src/RideRepository";
+import Account from "../src/Account";
+import Ride from "../src/Ride";
 
 test("Deve salvar uma account", async function () {
-    const accountDAO = new AccountDAODatabase();
-    const account = {
-        accountId: crypto.randomUUID(),
-        name: "John Doe",
-        email: `john.doe${Math.random()}@gmail.com`,
-        cpf: "97456321558",
-        password: "asdQWE123",
-        isPassenger: true
-    }
-    await accountDAO.saveAccount(account);
-    const accountByEmail = await accountDAO.getAccountByEmail(account.email);
-    expect(accountByEmail.name).toBe(account.name);
-    expect(accountByEmail.email).toBe(account.email);
-    expect(accountByEmail.cpf).toBe(account.cpf);
-    expect(accountByEmail.password).toBe(account.password);
-    const accountById = await accountDAO.getAccountById(account.accountId);
+    const accountRepository = new AccountRepositoryDatabase();
+    const account = Account.create("John Doe", `john.doe${Math.random()}@gmail.com`, "97456321558", "asdQWE123", true, false, "");
+    await accountRepository.saveAccount(account);
+    const accountByEmail = await accountRepository.getAccountByEmail(account.email);
+    expect(accountByEmail!.name).toBe(account.name);
+    expect(accountByEmail!.email).toBe(account.email);
+    expect(accountByEmail!.cpf).toBe(account.cpf);
+    expect(accountByEmail!.password).toBe(account.password);
+    const accountById = await accountRepository.getAccountById(account.accountId);
     expect(accountById.name).toBe(account.name);
     expect(accountById.email).toBe(account.email);
     expect(accountById.cpf).toBe(account.cpf);
@@ -26,29 +21,19 @@ test("Deve salvar uma account", async function () {
 });
 
 test("Deve salvar uma ride", async function () {
-    const accountDAO = new AccountDAODatabase();
-    const account = {
-        accountId: crypto.randomUUID(),
-        name: "John Doe",
-        email: `john.doe${Math.random()}@gmail.com`,
-        cpf: "97456321558",
-        password: "asdQWE123",
-        isPassenger: true
-    }
-    await accountDAO.saveAccount(account);
-    const rideDAO = new RideDAODatabase();
-    const ride = {
-        rideId: crypto.randomUUID(),
-        passengerId: account.accountId,
-        driverId: null,
-        status: "requested",
-        fare: 1,
-        distance: 10,
-        fromLat: 1,
-        fromLong: 1,
-        toLat: 2,
-        toLong: 2,
-        date: Date.now(),
-    }
-    await rideDAO.saveRide(ride);
+    const accountRepository = new AccountRepositoryDatabase();
+    const account = Account.create("John Doe", `john.doe${Math.random()}@gmail.com`, "97456321558", "asdQWE123", true, false, "");
+    await accountRepository.saveAccount(account);
+    const rideRepository = new RideRepositoryDatabase();
+    const ride = Ride.create(
+        account.accountId,
+        {
+            lat: -27.584905257808835,
+            long: -48.545022195325124
+        },
+        {
+            lat: -27.496887588317275,
+            long: -48.522234807851476
+        });
+    await rideRepository.saveRide(ride);
 })

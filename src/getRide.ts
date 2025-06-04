@@ -1,36 +1,35 @@
 import { inject } from "./Registry";
-import RideDAO from "./RideDAO";
+import Ride from "./Ride";
+import RideRepository from "./RideRepository";
 
 export default class GetRide {
-    @inject("rideDAO")
-    rideDAO!: RideDAO
+    @inject("rideRepository")
+    rideRepository!: RideRepository
 
     async execute(rideId:string): Promise<Output> {
-        const rideData = await this.rideDAO.getRideById(rideId);
+        const ride = await this.rideRepository.getRideById(rideId);        
         return {
-            rideId: rideData.ride_id,
-            passengerId: rideData.passenger_id,
-            from: {
-                lat: parseFloat(rideData.from_lat),
-                long: parseFloat(rideData.from_long),
-            },
-            to: {
-                lat: parseFloat(rideData.to_lat),
-                long: parseFloat(rideData.to_long),
-            },
-            distance: parseFloat(rideData.distance),
-            fare: parseFloat(rideData.fare),
-            status: rideData.status,
-            date: rideData.date,
-        };
+            rideId: ride.rideId,
+            passengerId: ride.passengerId,
+            fromLat: ride.fromLat,
+            fromLong: ride.fromLong,
+            toLat: ride.toLat,
+            toLong: ride.toLong,
+            fare: ride.calculateFare(),
+            distance: ride.calculateDistance(),
+            status: ride.status,
+            date: ride.date,
+        }
     } 
 }
 
 type Output = {
     rideId: string,
     passengerId: string,
-    from: Coord,
-    to: Coord,
+    fromLat: number,
+    fromLong: number,
+    toLat: number,
+    toLong: number, 
     fare: number
     distance: number,
     status: string,

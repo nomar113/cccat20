@@ -1,12 +1,12 @@
-import AccountDAO from "./dataAccount";
+import AccountRepository from "./AccountRepository";
 import { inject } from "./Registry";
 
 export default class GetAccount {
-    @inject("accountDAO")
-    accountDAO!: AccountDAO
+    @inject("accountRepository")
+    accountRepository!: AccountRepository
 
     async execute(accountId: string) {
-        const output = await this.accountDAO.getAccountById(accountId);
-        return output;
+        const account = await this.accountRepository.getAccountById(accountId);
+        return account;
     }
 }

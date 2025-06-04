@@ -1,3 +1,4 @@
+// Clean Architecture: Entity
 export function validatePassword (password: string) {
     // if (password === "") return false;
     // if (password.length < 8) return false;

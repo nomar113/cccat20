@@ -1,5 +1,6 @@
 const CPF_LENGTH = 11;
 
+// Clean Architecture: Entity
 export function validateCpf (cpf: string) {
 	if (!cpf) return false;
 	cpf = clean(cpf);
