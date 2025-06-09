@@ -1,9 +1,10 @@
-import Signup from "../src/Signup";
-import GetAccount from "../src/GetAccount";
-import { AccountRepositoryDatabase, AccountRepositoryMemory } from "../src/AccountRepository";
+import Signup from "../../src/application/usecase/Signup";
+import GetAccount from "../../src/application/usecase/GetAccount";
+import { AccountRepositoryDatabase, AccountRepositoryMemory } from "../../src/infra/repository/AccountRepository";
 import sinon from "sinon";
-import Registry from "../src/Registry";
-import DatabaseConnection, { PgPromiseAdapter } from "../src/DatabaseConnection";
+import Registry from "../../src/infra/dependency-injection/Registry";
+import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
+import Account from "../../src/domain/Account";
 
 let databaseConnection: DatabaseConnection;
 let signup: Signup;
@@ -132,11 +133,11 @@ test("Deve fazer a criação da conta de um usuário do tipo passageiro com stub
         email: `john.doe${Math.random()}@gmail.com`,
         cpf: "97456321558",
         password: "asdQWE123",
-        isPassenger: true
+        isPassenger: true,
     };
     const saveAccountStub = sinon.stub(AccountRepositoryDatabase.prototype, "saveAccount").resolves();
     const getAccountByEmailStub = sinon.stub(AccountRepositoryDatabase.prototype, "getAccountByEmail").resolves();
-    const getAccountByIdStub = sinon.stub(AccountRepositoryDatabase.prototype, "getAccountById").resolves(input);
+    const getAccountByIdStub = sinon.stub(AccountRepositoryDatabase.prototype, "getAccountById").resolves(Account.create(input.name, input.email, input.cpf, input.password, input.isPassenger, input.isDriver, input.carPlate));
     const outputSignup = await signup.execute(input);
     expect(outputSignup.accountId).toBeDefined();
     const outputGetAccount = await getAccount.execute(outputSignup.accountId);
@@ -178,13 +179,15 @@ test("Deve fazer a criação da conta de um usuário do tipo passageiro com mock
         email: `john.doe${Math.random()}@gmail.com`,
         cpf: "97456321558",
         password: "asdQWE123",
-        isPassenger: true
+        isPassenger: true,
+        isDriver: false,
+        carPlate: "",
     };
     const accountRepositoryMock = sinon.mock(AccountRepositoryDatabase.prototype);
     accountRepositoryMock.expects("saveAccount").once().resolves();
     accountRepositoryMock.expects("getAccountByEmail").once().resolves();
     const outputSignup = await signup.execute(input);
-    accountRepositoryMock.expects("getAccountById").once().withArgs(outputSignup.accountId).resolves(input);
+    accountRepositoryMock.expects("getAccountById").once().withArgs(outputSignup.accountId).resolves(Account.create(input.name, input.email, input.cpf, input.password, input.isPassenger, input.isDriver, input.carPlate));
     expect(outputSignup.accountId).toBeDefined();
     const outputGetAccount = await getAccount.execute(outputSignup.accountId);
     expect(outputGetAccount.name).toBe(input.name);

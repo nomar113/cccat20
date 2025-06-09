@@ -1,7 +1,8 @@
-import AccountRepository from "./AccountRepository";
-import RideRepository from "./RideRepository";
-import { inject } from "./Registry";
-import Ride from "./Ride";
+import Ride from "../../domain/Ride";
+import Coord from "../../domain/value-object/Coord";
+import { inject } from "../../infra/dependency-injection/Registry";
+import AccountRepository from "../../infra/repository/AccountRepository";
+import RideRepository from "../../infra/repository/RideRepository";
 
 export class RequestRide {
     @inject("accountRepository")
@@ -14,25 +15,22 @@ export class RequestRide {
         if (!account.isPassenger) throw new Error("The requester must be a passenger");
         const hasActiveRide = await this.rideRepository.hasActiveRideByPassengerId(input.passengerId);
         if (hasActiveRide) throw new Error("The requester already have an active ride")
-        const ride = Ride.create(input.passengerId, input.from, input.to);
+        const ride = Ride.create(input.passengerId, input.fromLat, input.fromLong, input.toLat, input.toLong);
         await this.rideRepository.saveRide(ride);
         return {
-            rideId: ride.rideId,
+            rideId: ride.getRideId(),
         }
     }
 }
 
 type Input = {
     passengerId: string,
-    from: Coord,
-    to: Coord
-}
-
-type Coord = {
-    lat: number,
-    long: number
+    fromLat: number,
+    fromLong: number,
+    toLat: number,
+    toLong: number
 }
 
 type Output = {
-    rideId: string;
+    rideId: string
 }

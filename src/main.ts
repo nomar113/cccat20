@@ -1,0 +1,33 @@
+import GetAccount from "./application/usecase/GetAccount";
+import GetRide from "./application/usecase/GetRide";
+import { RequestRide } from "./application/usecase/RequestRide";
+import Signup from "./application/usecase/Signup";
+import AccountController from "./infra/controller/AccountController";
+import RideController from "./infra/controller/RideController";
+import { PgPromiseAdapter } from "./infra/database/DatabaseConnection";
+import Registry from "./infra/dependency-injection/Registry";
+import { ExpressAdapter, HapiAdapter } from "./infra/http/HttpServer";
+import { AccountRepositoryDatabase } from "./infra/repository/AccountRepository";
+import { RideRepositoryDatabase } from "./infra/repository/RideRepository";
+
+// Main - Composition Root
+const databaseConnection = new PgPromiseAdapter();
+const accountRepository = new AccountRepositoryDatabase();
+const signup = new Signup();
+const getAccount = new GetAccount();
+const rideRepository = new RideRepositoryDatabase();
+const requestRide = new RequestRide();
+const getRide = new GetRide();
+const useExpress = true;
+const httpServer = useExpress ? new ExpressAdapter() : new HapiAdapter();
+Registry.getInstance().provide("databaseConnection", databaseConnection);
+Registry.getInstance().provide("accountRepository", accountRepository);
+Registry.getInstance().provide("signup", signup);
+Registry.getInstance().provide("getAccount", getAccount);
+Registry.getInstance().provide("rideRepository", rideRepository);
+Registry.getInstance().provide("requestRide", requestRide);
+Registry.getInstance().provide("getRide", getRide);
+Registry.getInstance().provide("httpServer", httpServer);
+new AccountController();
+new RideController();
+httpServer.listen(3000);

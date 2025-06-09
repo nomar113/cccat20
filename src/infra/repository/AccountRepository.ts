@@ -1,7 +1,6 @@
-import pgp from "pg-promise";
-import Account from "./Account";
-import { inject } from "./Registry";
-import DatabaseConnection from "./DatabaseConnection";
+import Account from "../../domain/Account";
+import DatabaseConnection from "../database/DatabaseConnection";
+import { inject } from "../dependency-injection/Registry";
 
 export default interface AccountRepository {
     getAccountByEmail(email: string): Promise<Account | undefined>;
@@ -25,23 +24,24 @@ export class AccountRepositoryDatabase implements AccountRepository {
     }
 
     async saveAccount(account: Account) {
-        await this.connection.query("insert into ccca.account (account_id, name, email, cpf, car_plate, is_passenger, is_driver, password) values ($1, $2, $3, $4, $5, $6, $7, $8)", [account.accountId, account.name, account.email, account.cpf, account.carPlate, !!account.isPassenger, !!account.isDriver, account.password]);
-        
+        await this.connection.query("insert into ccca.account (account_id, name, email, cpf, car_plate, is_passenger, is_driver, password) values ($1, $2, $3, $4, $5, $6, $7, $8)", [account.getAccountId(), account.getName(), account.getEmail(), account.getCpf(), account.getCarPlate(), !!account.isPassenger, !!account.isDriver, account.getPassword()]);
     }
 }
 
 export class AccountRepositoryMemory implements AccountRepository {
     accounts: Account[] = [];
 
-    async getAccountByEmail(email: string): Promise<any> {
-        return this.accounts.find((account:any) => account.email === email)
+    async getAccountByEmail(email: string): Promise<Account | undefined> {
+        return this.accounts.find((account:Account) => account.getEmail() === email);
     }
 
-    async getAccountById(accountId: string): Promise<any> {
-        return this.accounts.find((account:any) => account.accountId === accountId)
+    async getAccountById(accountId: string): Promise<Account> {
+        const account = this.accounts.find((account:Account) => account.getAccountId() === accountId);
+        if (!account) throw new Error("Account not found");
+        return account;
     }
 
-    async saveAccount(account: any): Promise<void> {
+    async saveAccount(account: Account): Promise<void> {
         this.accounts.push(account);
     }
 

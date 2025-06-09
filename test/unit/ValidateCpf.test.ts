@@ -1,4 +1,4 @@
-import { validateCpf } from "../src/validateCpf";
+import Cpf from "../../src/domain/value-object/Cpf";
 
 test.each([
     "97456321558",
@@ -6,8 +6,7 @@ test.each([
     "974.563.215-58",
     "714.287.938-60"
 ])("Deve validar um cpf %s", function (cpf: string) {
-    const isValid = validateCpf(cpf);
-    expect(isValid).toBe(true);
+    expect(new Cpf(cpf)).toBeDefined();
 });
 
 test.each([
@@ -16,6 +15,5 @@ test.each([
     null,
     "11111111111"
 ])("Não deve validar um cpf %s", function (cpf: any) {
-    const isValid = validateCpf(cpf);
-    expect(isValid).toBe(false);
+    expect(() => new Cpf(cpf)).toThrow("Invalid cpf");
 });

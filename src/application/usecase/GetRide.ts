@@ -1,6 +1,5 @@
-import { inject } from "./Registry";
-import Ride from "./Ride";
-import RideRepository from "./RideRepository";
+import { inject } from "../../infra/dependency-injection/Registry";
+import RideRepository from "../../infra/repository/RideRepository";
 
 export default class GetRide {
     @inject("rideRepository")
@@ -9,12 +8,12 @@ export default class GetRide {
     async execute(rideId:string): Promise<Output> {
         const ride = await this.rideRepository.getRideById(rideId);        
         return {
-            rideId: ride.rideId,
-            passengerId: ride.passengerId,
-            fromLat: ride.fromLat,
-            fromLong: ride.fromLong,
-            toLat: ride.toLat,
-            toLong: ride.toLong,
+            rideId: ride.getRideId(),
+            passengerId: ride.getPassengerId(),
+            fromLat: ride.getFrom().getLat(),
+            fromLong: ride.getFrom().getLong(),
+            toLat: ride.getTo().getLat(),
+            toLong: ride.getTo().getLong(),
             fare: ride.calculateFare(),
             distance: ride.calculateDistance(),
             status: ride.status,
@@ -34,9 +33,4 @@ type Output = {
     distance: number,
     status: string,
     date: Date,
-}
-
-type Coord = {
-    lat: number,
-    long: number,
 }

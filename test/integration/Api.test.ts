@@ -53,14 +53,10 @@ test("Deve fazer a solicitação de uma corrida", async function () {
     expect(outputSignup.accountId).toBeDefined();
      const inputRequestRide = {
         passengerId: outputSignup.accountId,
-        from: {
-            lat: -27.584905257808835,
-            long: -48.545022195325124
-        },
-        to: {
-            lat: -27.496887588317275,
-            long: -48.522234807851476
-        }
+        fromLat: -27.584905257808835,
+        fromLong: -48.545022195325124,
+        toLat: -27.496887588317275,
+        toLong: -48.522234807851476,
     }
     const responseRequestRide = await axios.post("http://localhost:3000/request-ride", inputRequestRide);
     const outputRequestRide = responseRequestRide.data;
@@ -68,10 +64,10 @@ test("Deve fazer a solicitação de uma corrida", async function () {
     const responseRide = await axios.get(`http://localhost:3000/ride/${outputRequestRide.rideId}`);
     const outputRide = responseRide.data;
     expect(outputRide.passengerId).toBe(outputSignup.accountId);
-    expect(outputRide.fromLat).toBe(inputRequestRide.from.lat);
-    expect(outputRide.fromLong).toBe(inputRequestRide.from.long);
-    expect(outputRide.toLat).toBe(inputRequestRide.to.lat);
-    expect(outputRide.toLong).toBe(inputRequestRide.to.long);
+    expect(outputRide.fromLat).toBe(inputRequestRide.fromLat);
+    expect(outputRide.fromLong).toBe(inputRequestRide.fromLong);
+    expect(outputRide.toLat).toBe(inputRequestRide.toLat);
+    expect(outputRide.toLong).toBe(inputRequestRide.toLong);
     expect(outputRide.status).toBe("requested");
 });
 
