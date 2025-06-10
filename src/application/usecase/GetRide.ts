@@ -1,12 +1,18 @@
 import { inject } from "../../infra/dependency-injection/Registry";
+import PositionRepository from "../../infra/repository/PositionRepository";
 import RideRepository from "../../infra/repository/RideRepository";
 
 export default class GetRide {
     @inject("rideRepository")
     rideRepository!: RideRepository
+    @inject("positionRepository")
+    positionRepository!: PositionRepository
 
     async execute(rideId:string): Promise<Output> {
-        const ride = await this.rideRepository.getRideById(rideId);        
+        const ride = await this.rideRepository.getRideById(rideId);
+        const positions = await this.positionRepository.getPositionsByRideId(rideId);
+        const distance = ride.calculateDistance(positions);
+        const fare = ride.calculateFare(positions);
         return {
             rideId: ride.getRideId(),
             passengerId: ride.getPassengerId(),
@@ -15,8 +21,8 @@ export default class GetRide {
             fromLong: ride.getFrom().getLong(),
             toLat: ride.getTo().getLat(),
             toLong: ride.getTo().getLong(),
-            fare: ride.calculateFare(),
-            distance: ride.calculateDistance(),
+            fare,
+            distance,
             status: ride.getStatus(),
             date: ride.date,
         }

@@ -6,12 +6,21 @@ import Password from "./value-object/Password";
 import UUID from "./value-object/UUID";
 
 // Clean Architecture: Entity
+// TDD: Entity (porque tem identidade e pode sofrer mutação de estado)
+// TDD: Aggregate: composto por Entity Account e os Value Objects (UUID, Name, Email, Cpf, Password, CarPlate)
+// TDD: todo aggregate tem um Aggregate Root <AR>, e é a Entity que "lidera" o aggregate
 export default class Account {
+    // TDD: Value Object
     private accountId: UUID;
+    // TDD: Value Object
     private name: Name;
+    // TDD: Value Object
     private email: Email;
+    // TDD: Value Object
     private cpf: Cpf;
+    // TDD: Value Object
     private password: Password;
+    // TDD: Value Object
     private carPlate?: CarPlate;
 
     constructor(
@@ -32,7 +41,7 @@ export default class Account {
 		if (isDriver) this.carPlate = new CarPlate(carPlate);
     }
 
-    // staitc factory method
+    // static factory method
     static create(
         name: string,
         email: string,

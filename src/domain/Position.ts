@@ -1,6 +1,8 @@
 import Coord from "./value-object/Coord";
 import UUID from "./value-object/UUID";
 
+// TDD: Entity
+// TDD: Aggregate
 export default class Position {
     private positionId: UUID;
     private rideId: UUID;

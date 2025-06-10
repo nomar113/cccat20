@@ -6,12 +6,14 @@ import StartRide from "../../src/application/usecase/StartRide";
 import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
 import Registry from "../../src/infra/dependency-injection/Registry";
 import AccountRepository, { AccountRepositoryDatabase } from "../../src/infra/repository/AccountRepository";
+import PositionRepository, { PositionRepositoryDatabase } from "../../src/infra/repository/PositionRepository";
 import RideRepository, { RideRepositoryDatabase } from "../../src/infra/repository/RideRepository";
 
 let databaseConnection: DatabaseConnection;
 let accountRepository: AccountRepository;
-let signup: Signup;
 let rideRepository: RideRepository;
+let positionRepository: PositionRepository;
+let signup: Signup;
 let requestRide: RequestRide;
 let getRide: GetRide;
 let acceptRide: AcceptRide;
@@ -21,6 +23,7 @@ beforeEach(() => {
     databaseConnection = new PgPromiseAdapter();
     accountRepository = new AccountRepositoryDatabase();
     rideRepository = new RideRepositoryDatabase();
+    positionRepository = new PositionRepositoryDatabase();
     signup = new Signup();
     requestRide = new RequestRide();
     acceptRide = new AcceptRide();
@@ -29,6 +32,7 @@ beforeEach(() => {
     Registry.getInstance().provide("databaseConnection", databaseConnection);
     Registry.getInstance().provide("accountRepository", accountRepository);
     Registry.getInstance().provide("rideRepository", rideRepository);
+    Registry.getInstance().provide("positionRepository", positionRepository);
     Registry.getInstance().provide("getRide", getRide);
 });
 

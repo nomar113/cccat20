@@ -18,14 +18,7 @@ export class RideRepositoryDatabase implements RideRepository {
 
     async getRideById(rideId: string): Promise<Ride> {
         const [data] = await this.connection.query("select * from ccca.ride where ride_id = $1", [rideId]);
-        const ride = new Ride(data.ride_id, data. passenger_id, data.driver_id, parseFloat(data.from_lat), parseFloat(data.from_long), parseFloat(data.to_lat), parseFloat(data.to_long), data.fare, data.distance, data.status, data.date);
-        const positionsData = await this.connection.query("select * from ccca.position where ride_id = $1", [ride.getRideId()]);
-        const positions = [];
-        for (const positionData of positionsData) {
-            positions.push(new Position(positionData.position_id, positionData.ride_id, parseFloat(positionData.lat), parseFloat(positionData.long)));
-        }
-        ride.setPositions(positions);
-        return ride;
+        return new Ride(data.ride_id, data. passenger_id, data.driver_id, parseFloat(data.from_lat), parseFloat(data.from_long), parseFloat(data.to_lat), parseFloat(data.to_long), data.fare, data.distance, data.status, data.date);
     }
 
     async saveRide(ride: Ride): Promise<void> {
@@ -35,11 +28,6 @@ export class RideRepositoryDatabase implements RideRepository {
 
     async updateRide(ride: Ride): Promise<void> {
         await this.connection.query("update ccca.ride set driver_id = $1, status = $2 where ride_id = $3", [ride.getDriverId(), ride.getStatus(), ride.getRideId()]);
-        await this.connection.query("delete from ccca.position where ride_id = $1", [ride.getRideId()]);
-        for (const position of ride.getPositions()) {
-            await this.connection.query("insert into ccca.position (position_id, ride_id, lat, long) values ($1, $2, $3, $4)", 
-                [position.getPositionId(), position.getRideId(), position.getCoord().getLat(), position.getCoord().getLong()])
-        }
     }
 
     async hasActiveRideByPassengerId(accountId: string): Promise<boolean> {

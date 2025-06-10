@@ -8,6 +8,7 @@ import { PgPromiseAdapter } from "./infra/database/DatabaseConnection";
 import Registry from "./infra/dependency-injection/Registry";
 import { ExpressAdapter, HapiAdapter } from "./infra/http/HttpServer";
 import { AccountRepositoryDatabase } from "./infra/repository/AccountRepository";
+import { PositionRepositoryDatabase } from "./infra/repository/PositionRepository";
 import { RideRepositoryDatabase } from "./infra/repository/RideRepository";
 
 // Main - Composition Root
@@ -18,6 +19,7 @@ const getAccount = new GetAccount();
 const rideRepository = new RideRepositoryDatabase();
 const requestRide = new RequestRide();
 const getRide = new GetRide();
+const positionRepository = new PositionRepositoryDatabase();
 const useExpress = true;
 const httpServer = useExpress ? new ExpressAdapter() : new HapiAdapter();
 Registry.getInstance().provide("databaseConnection", databaseConnection);
@@ -27,6 +29,7 @@ Registry.getInstance().provide("getAccount", getAccount);
 Registry.getInstance().provide("rideRepository", rideRepository);
 Registry.getInstance().provide("requestRide", requestRide);
 Registry.getInstance().provide("getRide", getRide);
+Registry.getInstance().provide("positionRepository", positionRepository);
 Registry.getInstance().provide("httpServer", httpServer);
 new AccountController();
 new RideController();

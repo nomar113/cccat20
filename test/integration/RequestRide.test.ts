@@ -1,26 +1,33 @@
 import GetRide from "../../src/application/usecase/GetRide";
 import RequestRide from "../../src/application/usecase/RequestRide";
 import Signup from "../../src/application/usecase/Signup";
+import Position from "../../src/domain/Position";
 import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
 import Registry from "../../src/infra/dependency-injection/Registry";
 import { AccountRepositoryDatabase } from "../../src/infra/repository/AccountRepository";
+import PositionRepository, { PositionRepositoryDatabase } from "../../src/infra/repository/PositionRepository";
 import { RideRepositoryDatabase } from "../../src/infra/repository/RideRepository";
 
 let databaseConnection: DatabaseConnection;
+let accountRepository: AccountRepositoryDatabase;
+let rideRepository: RideRepositoryDatabase;
+let positionRepository: PositionRepository;
 let signup: Signup;
 let requestRide: RequestRide;
 let getRide: GetRide;
 
 beforeEach(()=> {
     databaseConnection = new PgPromiseAdapter();
-    Registry.getInstance().provide("databaseConnection", databaseConnection);
-    const accountRepository = new AccountRepositoryDatabase();
-    Registry.getInstance().provide("accountRepository", accountRepository);
+    accountRepository = new AccountRepositoryDatabase();
     signup = new Signup();
-    const rideRepository = new RideRepositoryDatabase();
-    Registry.getInstance().provide("rideRepository", rideRepository);
+    rideRepository = new RideRepositoryDatabase();
     requestRide = new RequestRide();
     getRide = new GetRide();
+    positionRepository = new PositionRepositoryDatabase();
+    Registry.getInstance().provide("databaseConnection", databaseConnection);
+    Registry.getInstance().provide("accountRepository", accountRepository);
+    Registry.getInstance().provide("rideRepository", rideRepository);
+    Registry.getInstance().provide("positionRepository", positionRepository);
 })
 
 test("Não deve solicitar uma corrida o usuário não seja passageiro", async function() {
