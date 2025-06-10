@@ -1,6 +1,3 @@
-import Position from "./Position";
-import DistanceCalculator from "./service/DistanceCalculator";
-import FareCalculator from "./service/FareCalculator";
 import Coord from "./value-object/Coord";
 import UUID from "./value-object/UUID";
 
@@ -21,8 +18,8 @@ export default class Ride {
         fromLong: number,
         toLat: number,
         toLong: number,
-        readonly fare: number,
-        readonly distance: number,
+        private fare: number,
+        private distance: number,
         private status: string,
         readonly date: Date,
     ) {
@@ -46,25 +43,6 @@ export default class Ride {
         const fare = 0;
         const distance = 0;
         return new Ride(rideId, passengerId, null, fromLat, fromLong, toLat, toLong, fare, distance, status, date);
-    }
-
-    calculateDistance (positions?: Position[]) {
-        if(["requested", "accepted"].includes(this.status)) {
-            return DistanceCalculator.calculate(this.from, this.to);
-        }
-        if (!positions) return 0;
-        let total = 0;
-        for (const [index, position] of positions.entries()) {
-            const nextPosition = positions[index + 1];
-            if (!nextPosition) break;
-            total += DistanceCalculator.calculate(position.getCoord(), nextPosition.getCoord());
-        }
-        return total;
-    }
-
-    calculateFare (positions?: Position[]) {
-        const distance = this.calculateDistance(positions);
-        return FareCalculator.calculate(distance);
     }
 
     accept(driverId: string) {
@@ -104,5 +82,21 @@ export default class Ride {
 
     setDriverId(driverId: string) {
         this.driverId = new UUID(driverId);
+    }
+
+    getFare() {
+        return this.fare;
+    }
+
+    setFare(fare: number) {
+        this.fare = fare;
+    }
+
+    getDistance() {
+        return this.distance;
+    }
+
+    setDistance(distance: number) {
+        this.distance = distance;
     }
 }

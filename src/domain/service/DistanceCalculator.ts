@@ -1,8 +1,19 @@
+import Position from "../Position";
 import Coord from "../value-object/Coord";
 
 // Domain Service
 export default class DistanceCalculator {
-    static calculate (from: Coord, to: Coord) {
+    static calculateFromPositions(positions: Position[]) {
+        let total = 0;
+        for (const [index, position] of positions.entries()) {
+            const nextPosition = positions[index + 1];
+            if (!nextPosition) break;
+            total += this.calculateFromCoord(position.getCoord(), nextPosition.getCoord());
+        }
+        return total;
+    }
+
+    static calculateFromCoord (from: Coord, to: Coord) {
         const earthRadius = 6371;
         const degreesToRadians = Math.PI / 180;
         const deltaLat = (to.getLat() - from.getLat()) * degreesToRadians;

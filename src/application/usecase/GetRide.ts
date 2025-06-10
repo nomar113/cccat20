@@ -1,3 +1,4 @@
+import Position from "../../domain/Position";
 import { inject } from "../../infra/dependency-injection/Registry";
 import PositionRepository from "../../infra/repository/PositionRepository";
 import RideRepository from "../../infra/repository/RideRepository";
@@ -11,8 +12,6 @@ export default class GetRide {
     async execute(rideId:string): Promise<Output> {
         const ride = await this.rideRepository.getRideById(rideId);
         const positions = await this.positionRepository.getPositionsByRideId(rideId);
-        const distance = ride.calculateDistance(positions);
-        const fare = ride.calculateFare(positions);
         return {
             rideId: ride.getRideId(),
             passengerId: ride.getPassengerId(),
@@ -21,10 +20,11 @@ export default class GetRide {
             fromLong: ride.getFrom().getLong(),
             toLat: ride.getTo().getLat(),
             toLong: ride.getTo().getLong(),
-            fare,
-            distance,
+            fare: ride.getFare(),
+            distance: ride.getDistance(),
             status: ride.getStatus(),
             date: ride.date,
+            positions: positions.map((position:Position) => ({ lat: position.getCoord().getLat(), long: position.getCoord().getLong() })),
         }
     } 
 }
@@ -41,4 +41,5 @@ type Output = {
     distance: number,
     status: string,
     date: Date,
+    positions: { lat: number, long: number }[],
 }
