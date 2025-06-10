@@ -1,10 +1,9 @@
 import Ride from "../../domain/Ride";
-import Coord from "../../domain/value-object/Coord";
 import { inject } from "../../infra/dependency-injection/Registry";
 import AccountRepository from "../../infra/repository/AccountRepository";
 import RideRepository from "../../infra/repository/RideRepository";
 
-export class RequestRide {
+export default class RequestRide {
     @inject("accountRepository")
     accountRepository!: AccountRepository;
     @inject("rideRepository")

@@ -1,5 +1,5 @@
 import GetRide from "../../application/usecase/GetRide";
-import { RequestRide } from "../../application/usecase/RequestRide";
+import RequestRide from "../../application/usecase/RequestRide";
 import { inject } from "../dependency-injection/Registry";
 import HttpServer from "../http/HttpServer";
 

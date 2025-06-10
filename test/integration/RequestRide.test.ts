@@ -1,5 +1,5 @@
 import GetRide from "../../src/application/usecase/GetRide";
-import { RequestRide } from "../../src/application/usecase/RequestRide";
+import RequestRide from "../../src/application/usecase/RequestRide";
 import Signup from "../../src/application/usecase/Signup";
 import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
 import Registry from "../../src/infra/dependency-injection/Registry";

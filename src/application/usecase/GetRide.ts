@@ -10,6 +10,7 @@ export default class GetRide {
         return {
             rideId: ride.getRideId(),
             passengerId: ride.getPassengerId(),
+            driverId: ride.getDriverId() ? ride.getDriverId() : undefined,
             fromLat: ride.getFrom().getLat(),
             fromLong: ride.getFrom().getLong(),
             toLat: ride.getTo().getLat(),
@@ -25,6 +26,7 @@ export default class GetRide {
 type Output = {
     rideId: string,
     passengerId: string,
+    driverId?: string,
     fromLat: number,
     fromLong: number,
     toLat: number,

@@ -1,6 +1,6 @@
 import GetAccount from "./application/usecase/GetAccount";
 import GetRide from "./application/usecase/GetRide";
-import { RequestRide } from "./application/usecase/RequestRide";
+import RequestRide from "./application/usecase/RequestRide";
 import Signup from "./application/usecase/Signup";
 import AccountController from "./infra/controller/AccountController";
 import RideController from "./infra/controller/RideController";
