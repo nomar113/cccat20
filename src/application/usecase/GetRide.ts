@@ -17,7 +17,7 @@ export default class GetRide {
             toLong: ride.getTo().getLong(),
             fare: ride.calculateFare(),
             distance: ride.calculateDistance(),
-            status: ride.status,
+            status: ride.getStatus(),
             date: ride.date,
         }
     } 

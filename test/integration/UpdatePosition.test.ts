@@ -3,19 +3,23 @@ import GetRide from "../../src/application/usecase/GetRide";
 import RequestRide from "../../src/application/usecase/RequestRide";
 import Signup from "../../src/application/usecase/Signup";
 import StartRide from "../../src/application/usecase/StartRide";
+import UpdatePosition from "../../src/application/usecase/UpdatePosition";
 import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
 import Registry from "../../src/infra/dependency-injection/Registry";
 import AccountRepository, { AccountRepositoryDatabase } from "../../src/infra/repository/AccountRepository";
+import { PositionRepositoryDatabase } from "../../src/infra/repository/PositionRepository";
 import RideRepository, { RideRepositoryDatabase } from "../../src/infra/repository/RideRepository";
 
 let databaseConnection: DatabaseConnection;
 let accountRepository: AccountRepository;
-let signup: Signup;
 let rideRepository: RideRepository;
+let positionRepository: PositionRepositoryDatabase;
+let signup: Signup;
 let requestRide: RequestRide;
 let getRide: GetRide;
 let acceptRide: AcceptRide;
 let startRide: StartRide;
+let updatePosition: UpdatePosition;
 
 beforeEach(() => {
     databaseConnection = new PgPromiseAdapter();
@@ -26,13 +30,16 @@ beforeEach(() => {
     acceptRide = new AcceptRide();
     getRide = new GetRide();
     startRide = new StartRide();
+    positionRepository = new PositionRepositoryDatabase();
+    updatePosition = new UpdatePosition();
     Registry.getInstance().provide("databaseConnection", databaseConnection);
     Registry.getInstance().provide("accountRepository", accountRepository);
     Registry.getInstance().provide("rideRepository", rideRepository);
     Registry.getInstance().provide("getRide", getRide);
+    Registry.getInstance().provide("positionRepository", positionRepository);
 });
 
-test("Deve iniciar uma corrida com status accepted",async function () {
+test("Deve atualizar a posição", async function() {
     const inputPassenger = {
         name: "John Doe",
         email: `john.doe${Math.random()}@gmail.com`,
@@ -75,8 +82,31 @@ test("Deve iniciar uma corrida com status accepted",async function () {
         rideId: ride.rideId
     }
     await startRide.execute(inputStartRide);
+
+    const inputPosition1 = {
+        rideId: ride.rideId,
+        lat: -27.584905257808835,
+        long: -48.545022195325124,
+    }
+    await updatePosition.execute(inputPosition1);
+
+    const inputPosition2 = {
+        rideId: ride.rideId,
+        lat: -27.496887588317275,
+        long: -48.522234807851476,
+    }
+    await updatePosition.execute(inputPosition2);
+
+    const inputPosition3 = {
+        rideId: ride.rideId,
+        lat: -27.584905257808835,
+        long: -48.545022195325124,
+    }
+    await updatePosition.execute(inputPosition3);
+
     ride = await getRide.execute(outputRequestRide.rideId);
     expect(ride.status).toBe("in_progress");
+    expect(ride.distance).toBe(20);
 });
 
 afterEach(async () => {

@@ -1,4 +1,3 @@
-import sinon from "sinon";
 import AcceptRide from "../../src/application/usecase/AcceptRide";
 import GetRide from "../../src/application/usecase/GetRide";
 import RequestRide from "../../src/application/usecase/RequestRide";
@@ -7,7 +6,6 @@ import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/D
 import Registry from "../../src/infra/dependency-injection/Registry";
 import AccountRepository, { AccountRepositoryDatabase } from "../../src/infra/repository/AccountRepository";
 import RideRepository, { RideRepositoryDatabase } from "../../src/infra/repository/RideRepository";
-import Ride from "../../src/domain/Ride";
 
 let databaseConnection: DatabaseConnection;
 let accountRepository: AccountRepository;

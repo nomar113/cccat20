@@ -16,11 +16,11 @@ export default class AcceptRide {
     async execute(input: Input) {
         const account = await this.accountRepository.getAccountById(input.driverId);
         if (!account.isDriver) throw new Error("Account must be a driver");
-        const ride = await this.getRide.execute(input.rideId);
-        if (ride.status !== "requested") throw new Error("Ride must be requested");
         const hasActiveRide = await this.rideRepository.hasActiveRideByDriverId(input.driverId);
         if (hasActiveRide) throw new Error("Driver already in a ride");
-        await this.rideRepository.acceptRide(input.rideId, input.driverId);
+        const ride = await this.rideRepository.getRideById(input.rideId);
+        ride.accept(input.driverId);
+        await this.rideRepository.updateRide(ride);
     }
 }
 

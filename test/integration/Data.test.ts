@@ -1,8 +1,10 @@
 import Account from "../../src/domain/Account";
+import Position from "../../src/domain/Position";
 import Ride from "../../src/domain/Ride";
 import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
 import Registry from "../../src/infra/dependency-injection/Registry";
 import { AccountRepositoryDatabase } from "../../src/infra/repository/AccountRepository";
+import { PositionRepositoryDatabase } from "../../src/infra/repository/PositionRepository";
 import { RideRepositoryDatabase } from "../../src/infra/repository/RideRepository";
 
 let databaseConnection: DatabaseConnection;

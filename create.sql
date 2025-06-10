@@ -26,3 +26,11 @@ create table ccca.ride (
 	to_long numeric,
 	date timestamp without time zone
 );
+
+create table ccca.position (
+	position_id uuid primary key,
+	ride_id uuid,
+	lat numeric,
+	long numeric,
+	date timestamp
+);
