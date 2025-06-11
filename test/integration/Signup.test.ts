@@ -5,6 +5,7 @@ import sinon from "sinon";
 import Registry from "../../src/infra/dependency-injection/Registry";
 import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
 import Account from "../../src/domain/Account";
+import ORM from "../../src/infra/orm/ORM";
 
 let databaseConnection: DatabaseConnection;
 let signup: Signup;
@@ -12,10 +13,13 @@ let getAccount: GetAccount;
 
 beforeEach(() => {
     const useInMemory = false;
+    const useORM = true;
     databaseConnection = new PgPromiseAdapter();
-    Registry.getInstance().provide("databaseConnection", databaseConnection);
     const accountRepository = useInMemory ? new AccountRepositoryMemory() : new AccountRepositoryDatabase();
+    const orm = new ORM();
+    Registry.getInstance().provide("databaseConnection", databaseConnection);
     Registry.getInstance().provide("accountRepository", accountRepository);
+    Registry.getInstance().provide("orm", orm);
     signup = new Signup();
     getAccount = new GetAccount();
 })
