@@ -7,6 +7,7 @@ export default class Password {
     }
 
     validatePassword (password: string) {
+        if (!password) return false;
         return (password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/));
     }
 
