@@ -13,6 +13,7 @@ export default class Position {
         rideId: string,
         lat: number,
         long: number,
+        readonly date: Date,
     ) {
         this.positionId = new UUID(positionId);
         this.rideId = new UUID(rideId);
@@ -23,9 +24,10 @@ export default class Position {
         rideId: string,
         lat: number,
         long: number,
+        date = new Date(),
     ) {
         const positionId = UUID.create().getValue();
-        return new Position(positionId, rideId, lat, long);
+        return new Position(positionId, rideId, lat, long, date);
     }
 
     getPositionId() {
