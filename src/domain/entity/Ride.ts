@@ -1,5 +1,6 @@
 import Coord from "../value-object/Coord";
 import UUID from "../value-object/UUID";
+import RideStatus, { RideStatusFactory } from "../value-object/RideStatus";
 
 // TDD: Entity, possui identidade e permite mutação
 // TDD: Aggregate
@@ -9,6 +10,7 @@ export default class Ride {
     private driverId?: UUID;
     private from: Coord;
     private to: Coord;
+    private status: RideStatus;
 
     constructor(
         rideId: string,
@@ -20,7 +22,7 @@ export default class Ride {
         toLong: number,
         private fare: number,
         private distance: number,
-        private status: string,
+        status: string,
         readonly date: Date,
     ) {
         this.rideId = new UUID(rideId);
@@ -28,6 +30,7 @@ export default class Ride {
         if (driverId) this.driverId = new UUID(driverId);
         this.from = new Coord(fromLat, fromLong);
         this.to = new Coord(toLat, toLong);
+        this.status = RideStatusFactory.create(status, this);
     }
 
     static create (
@@ -46,19 +49,16 @@ export default class Ride {
     }
 
     accept(driverId: string) {
-        if (this.status !== "requested") throw new Error("Invalid status");
-        this.status = "accepted";
+        this.status.accept();
         this.setDriverId(driverId);
     }
 
     start() {
-        if (this.status !== "accepted") throw new Error("Invalid status");
-        this.status = "in_progress";
+        this.status.start();
     }
 
     finish() {
-        if (this.status !== "in_progress") throw new Error("Invalid status");
-        this.status = "completed";
+        this.status.finish();
     }
 
     getRideId() {
@@ -82,7 +82,11 @@ export default class Ride {
     }
 
     getStatus() {
-        return this.status;
+        return this.status.value;
+    }
+
+    setStatus(status: RideStatus) {
+        this.status = status;
     }
 
     setDriverId(driverId: string) {
