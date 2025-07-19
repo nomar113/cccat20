@@ -1,4 +1,4 @@
-import Position from "../../domain/Position";
+import Position from "../../domain/entity/Position";
 import DatabaseConnection from "../database/DatabaseConnection";
 import { inject } from "../dependency-injection/Registry";
 

@@ -1,4 +1,4 @@
-import Ride from "../../src/domain/Ride"
+import Ride from "../../src/domain/entity/Ride";
 import UUID from "../../src/domain/value-object/UUID";
 
 test("Deve testar a ride", function () {

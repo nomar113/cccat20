@@ -1,5 +1,5 @@
-import Coord from "./value-object/Coord";
-import UUID from "./value-object/UUID";
+import Coord from "../value-object/Coord";
+import UUID from "../value-object/UUID";
 
 // TDD: Entity, possui identidade e permite mutação
 // TDD: Aggregate

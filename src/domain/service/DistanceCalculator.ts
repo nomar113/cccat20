@@ -1,4 +1,4 @@
-import Position from "../Position";
+import Position from "../entity/Position";
 import Coord from "../value-object/Coord";
 
 // Domain Service

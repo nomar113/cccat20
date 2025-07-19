@@ -1,4 +1,4 @@
-import Account from "../../src/domain/Account"
+import Account from "../../src/domain/entity/Account";
 
 test("Deve criar uma conta passageiro", function () {
     const account = Account.create(

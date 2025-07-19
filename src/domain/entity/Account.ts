@@ -1,9 +1,9 @@
-import CarPlate from "./value-object/CarPlate";
-import Cpf from "./value-object/Cpf";
-import Email from "./value-object/Email";
-import Name from "./value-object/Name";
-import Password from "./value-object/Password";
-import UUID from "./value-object/UUID";
+import CarPlate from "../value-object/CarPlate";
+import Cpf from "../value-object/Cpf";
+import Email from "../value-object/Email";
+import Name from "../value-object/Name";
+import Password from "../value-object/Password";
+import UUID from "../value-object/UUID";
 
 // Clean Architecture: Entity
 // TDD: Entity (porque tem identidade e pode sofrer mutação de estado)

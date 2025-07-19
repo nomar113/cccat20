@@ -1,6 +1,6 @@
 import AccountRepository from "../../infra/repository/AccountRepository";
 import { inject } from "../../infra/dependency-injection/Registry";
-import Account from "../../domain/Account";
+import Account from "../../domain/entity/Account";
 
 export default class Signup {
 	@inject("accountRepository")

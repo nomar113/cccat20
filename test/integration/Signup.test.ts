@@ -1,11 +1,11 @@
-import Signup from "../../src/application/usecase/Signup";
-import GetAccount from "../../src/application/usecase/GetAccount";
-import { AccountRepositoryDatabase, AccountRepositoryMemory } from "../../src/infra/repository/AccountRepository";
 import sinon from "sinon";
-import Registry from "../../src/infra/dependency-injection/Registry";
+import GetAccount from "../../src/application/usecase/GetAccount";
+import Signup from "../../src/application/usecase/Signup";
+import Account from "../../src/domain/entity/Account";
 import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
-import Account from "../../src/domain/Account";
+import Registry from "../../src/infra/dependency-injection/Registry";
 import ORM from "../../src/infra/orm/ORM";
+import { AccountRepositoryMemory, AccountRepositoryDatabase } from "../../src/infra/repository/AccountRepository";
 
 let databaseConnection: DatabaseConnection;
 let signup: Signup;

@@ -1,5 +1,4 @@
-import Position from "../../domain/Position";
-import Ride from "../../domain/Ride";
+import Ride from "../../domain/entity/Ride";
 import DatabaseConnection from "../database/DatabaseConnection";
 import { inject } from "../dependency-injection/Registry";
 

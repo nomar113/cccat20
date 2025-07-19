@@ -1,5 +1,5 @@
-import Coord from "./value-object/Coord";
-import UUID from "./value-object/UUID";
+import Coord from "../value-object/Coord";
+import UUID from "../value-object/UUID";
 
 // TDD: Entity
 // TDD: Aggregate

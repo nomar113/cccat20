@@ -1,12 +1,12 @@
 import GetRide from "../../src/application/usecase/GetRide";
 import RequestRide from "../../src/application/usecase/RequestRide";
 import Signup from "../../src/application/usecase/Signup";
-import Position from "../../src/domain/Position";
 import DatabaseConnection, { PgPromiseAdapter } from "../../src/infra/database/DatabaseConnection";
 import Registry from "../../src/infra/dependency-injection/Registry";
 import { AccountRepositoryDatabase } from "../../src/infra/repository/AccountRepository";
 import PositionRepository, { PositionRepositoryDatabase } from "../../src/infra/repository/PositionRepository";
 import { RideRepositoryDatabase } from "../../src/infra/repository/RideRepository";
+
 
 let databaseConnection: DatabaseConnection;
 let accountRepository: AccountRepositoryDatabase;

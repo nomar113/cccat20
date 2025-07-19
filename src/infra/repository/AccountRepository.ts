@@ -1,4 +1,4 @@
-import Account from "../../domain/Account";
+import Account from "../../domain/entity/Account";
 import DatabaseConnection from "../database/DatabaseConnection";
 import { inject } from "../dependency-injection/Registry";
 import ORM, { AccountModel } from "../orm/ORM";

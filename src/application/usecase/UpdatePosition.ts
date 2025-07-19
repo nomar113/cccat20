@@ -1,9 +1,10 @@
-import Position from "../../domain/Position";
+import Position from "../../domain/entity/Position";
 import DistanceCalculator from "../../domain/service/DistanceCalculator";
 import FareCalculator from "../../domain/service/FareCalculator";
 import { inject } from "../../infra/dependency-injection/Registry";
 import PositionRepository from "../../infra/repository/PositionRepository";
-import { RideRepositoryDatabase } from "../../infra/repository/RideRepository"
+import { RideRepositoryDatabase } from "../../infra/repository/RideRepository";
+
 
 export default class UpdatePosition {
     @inject("rideRepository")
