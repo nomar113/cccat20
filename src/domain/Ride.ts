@@ -56,6 +56,11 @@ export default class Ride {
         this.status = "in_progress";
     }
 
+    finish() {
+        if (this.status !== "in_progress") throw new Error("Invalid status");
+        this.status = "completed";
+    }
+
     getRideId() {
         return this.rideId.getValue();
     }
